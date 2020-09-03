@@ -203,7 +203,6 @@ def DXC_test():
     start = time.time()
     tes = mysql_demo.get_instance('root', 'root', 'web_log')
     data = test_data(100000)
-    print(pz.now_time)
     DXC(10,tes.Insert,('test',['name','age'],data))
     # 关闭连接池
     tes.close_pool_conn()
@@ -215,7 +214,6 @@ def XC_test():
     num=10
     start = time.time()
     tes = mysql_demo.get_instance('root', 'root', 'web_log')
-    print(pz.now_time)
     job_list = []
     data = test_data(100000)
     for i in range(num):
