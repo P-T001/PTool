@@ -115,6 +115,9 @@ class BG():
                 max_num = 1048576
             elif hz == '.csv':
                 max_num = 99999999999999999999999
+            else:
+                print('该文件后缀不是表格文件后缀')
+                exit()
         new_data = self.To_dict(data)
         header = new_data[0].keys()
         if len(new_data) < max_num:  # 如果数据长度小于最大长度，直接保存文件
