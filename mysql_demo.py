@@ -201,12 +201,12 @@ def DXC(num,def_target,def_args):
 # 线程测试|按顺序插入
 def DXC_test():
     start = time.time()
-    pz = mysql_demo.get_instance('root', 'root', 'web_log')
+    tes = mysql_demo.get_instance('root', 'root', 'web_log')
     data = test_data(100000)
     print(pz.now_time)
-    DXC(10,pz.Insert,('test',['name','age'],data))
+    DXC(10,tes.Insert,('test',['name','age'],data))
     # 关闭连接池
-    pz.close_pool_conn()
+    tes.close_pool_conn()
     print("totol time:",time.time()-start)
 
 # 协程测试|同步插入
@@ -214,25 +214,25 @@ def XC_test():
     monkey.patch_all()
     num=10
     start = time.time()
-    pz = mysql_demo.get_instance('root', 'root', 'web_log')
+    tes = mysql_demo.get_instance('root', 'root', 'web_log')
     print(pz.now_time)
     job_list = []
     data = test_data(100000)
     for i in range(num):
-        job_list.append(gevent.spawn(pz.Insert,'test',['name','age'],data))
+        job_list.append(gevent.spawn(tes.Insert,'test',['name','age'],data))
         #print(job_list)
     gevent.joinall(job_list)
-    pz.close_pool_conn()
+    tes.close_pool_conn()
     print("totol time:", time.time() - start)
 
 # 正常插入
 def test():
     start = time.time()
     data= test_data(100)
-    pz = mysql_demo.get_instance('root', 'root', 'web_log')
+    tes = mysql_demo.get_instance('root', 'root', 'web_log')
     for i in range(10):
-        pz.Insert('test',['name','age'],data)
-    pz.close_pool_conn()
+        tes.Insert('test',['name','age'],data)
+    tes.close_pool_conn()
     print("totol time:", time.time() - start)
 
 if __name__ == '__main__':
