@@ -131,7 +131,8 @@ class mysql_demo(object):
         except:
             self.Debug_log("创建表{}失败".format(table_name))
             return False
-
+        
+    # 功能：导出数据库中处默认的库的所有表|
     def Import_all(self,contain_list=None,exclude_add_list=None):
         '''
         :param contain_list:导出表名|list
@@ -184,7 +185,7 @@ class mysql_demo(object):
 def test_data(num):
     s=[]
     for i in range(num):
-        s.append(('张小凡%d'%i,'%d'%i))
+        s.append(('XXX%d'%i,'%d'%i))
     return s
 
 # 多线程工作队列
