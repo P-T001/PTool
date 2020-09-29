@@ -150,7 +150,7 @@ def Read_file(filename):
 
 
 if __name__ == '__main__':
-    # 写入文件------------------------------
+    # 写入表格文件------------------------------
     # 测试数据生成
     di = {'name1': ['aaa', 'bbb'], 'age': ['18', '19']}
     li = [['name', 'age'], ['aaa', '16'], ['bbb', '16'], ['ccc', '16']]
@@ -166,7 +166,7 @@ if __name__ == '__main__':
         To_data('xx/dic.csv', dic, 'w')
         To_data('xx/dic.xls', dic, 'w')
         To_data('xx/dic.xlsx', dic, 'w')
-    # 读取文件----------------------------
+    # 读取表格文件----------------------------
     result1 = Read_file('xx/li.xls')
     result2 = Read_file('xx/li.xlsx')
     result3 = Read_file('xx/li.csv')
