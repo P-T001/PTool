@@ -56,7 +56,7 @@ def CH(df, filename, header, mo):
         elif mo == 'w':
             df.to_csv(filename, index=False, mode=mo, header=header)
 
-# 功能类--------------------------------------------------------------
+            
 def To_list_dict(data):
     '''
     功能：将三种数据格式，转换成字典|
