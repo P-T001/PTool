@@ -77,7 +77,7 @@ def Del_file(path,dir_status=None):
     功能:移除路径下的所有文件（文件和文件夹），删除的路径可以包含path
     :param path: 路径
     :param dir_status: path路径是否删除|bool|True：删除，False：不删除，默认False
-    :return:
+    :return:None
     '''
     del_list=os.listdir(path)
     for f in del_list:
@@ -88,3 +88,20 @@ def Del_file(path,dir_status=None):
             shutil.rmtree(file_path)
     if dir_status:
         os.rmdir(path)
+        
+def Copy(path,out):
+    '''
+    功能：复制path路径下的所有文件（文件和文件夹）到out路径（该路径可以不存在）下
+    :param path: 源路径|str
+    :param out: 目标路径|str
+    :return: None
+    '''
+    for files in os.listdir(path):
+        name = os.path.join(path, files)
+        back_name = os.path.join(out, files)
+        if os.path.isfile(name):
+            shutil.copy(name, back_name)
+        else:
+            if not os.path.isdir(back_name):
+                os.makedirs(back_name)
+            Copy(name, back_name)
