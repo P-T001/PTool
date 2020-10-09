@@ -148,6 +148,49 @@ def Read_file(filename):
         li.append(dict(zip(headers, row)))
     return li
 
+def Csv_split(filename, file_num, header=None):
+    '''
+    功能：csv大文件分割
+    :param filename: 文件路径名|str
+    :param file_num: 分割个数|int
+    :param header: 字段名|list|个数一定要与分割文件的字段个数一致
+    :return:
+    '''
+    # 根据是否有表头执行不同程序，默认是否表头的
+    if header:
+        # 获得每个文件需要有的行数
+        chunksize = 1000000  # 先初始化的chunksize是100W
+        data1 = pd.read_csv(open(filename), chunksize=chunksize, sep=',', encoding='utf-8')
+        num = 0
+        for chunk in data1:
+            num += len(chunk)
+        chunksize = round(num / file_num + 1)  # 根据分割大小计算分块读取的值
+        # 需要存的file
+        head, tail = os.path.splitext(filename)
+        data2 = pd.read_csv(open(filename), chunksize=chunksize, sep=',', encoding='utf-8',names=header)  # 加入自定义header以新的分块大小重新读取csv
+        i = 0  # 定文件名
+        for chunk in data2:
+            chunk.to_csv('{0}_{1}{2}'.format(head, i, tail), index=False)
+            print('保存第{0}个数据'.format(i))
+            i += 1
+    else:
+        # 获得每个文件需要有的行数
+        chunksize = 1000000  # 先初始化的chunksize是100W
+        data1 = pd.read_csv(open(filename), chunksize=chunksize, header=None, sep=',')
+        num = 0
+        for chunk in data1:
+            num += len(chunk)
+        chunksize = round(num / file_num + 1)
+
+        # 需要存的file
+        head, tail = os.path.splitext(filename)
+        data2 = pd.read_csv(open(filename), chunksize=chunksize, header=0, sep=',')
+        i = 0  # 定文件名
+        for chunk in data2:
+            chunk.to_csv('{0}_{1}{2}'.format(head, i, tail), index=False)
+            print('保存第{0}个数据'.format(i))
+            i += 1
+
 
 if __name__ == '__main__':
     # 写入表格文件------------------------------
@@ -173,3 +216,5 @@ if __name__ == '__main__':
     print(result1)
     print(result2)
     print(result3)
+    # csv大文件分割---------------------------
+    Csv_split('xx/dic.csv',3)            # 一个文件分成3份
