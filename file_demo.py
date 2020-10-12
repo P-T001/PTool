@@ -2,36 +2,44 @@ import os
 import shutil
 
 
-
-def List_file(path,Hz_list=None,Pc_list=None):
+def List_file(path, Pc_hz_list=None,Only_hz_list=None, Pc_path_list=None):
     '''
-    功能：列出路径下的所有文件（不包括文件夹）
+    功能：列出路径下的所有文件路径，可根据条件筛选（不包括文件夹）
     :param path: 路径|str|相对路径/绝对路径
-    :param Hz_list: 排除的后缀列表|list|['.csv']
-    :param Pc_list: 排除的文件夹列表|list|['name']  如需排除单个绝对路径文件夹，可以在返回的列表中排除
+    :param Pc_hz_list: 排除的后缀列表|list|['.csv']
+    :param Only_hz_list: 需要的后缀列表|list|['.csv']
+    :param Pc_path_list: 排除的文件夹列表|list|['name']  如需排除单个绝对路径文件夹，可以在返回的列表中排除
     :return: 路径列表|list|路径取决于path是相对路径/绝对路径
     '''
+
     def File(path, lists, f_Pc_list):
         dirs = os.listdir(path)
         if len(dirs) > 0:
             for dir in dirs:
-                dir_path='{}/{}'.format(path,dir) if path[-1] != "/" else '{}{}'.format(path,dir)
+                dir_path = '{}/{}'.format(path, dir) if path[-1] != "/" else '{}{}'.format(path, dir)
                 if os.path.isdir(dir_path):
                     if f_Pc_list is None:
-                        f_Pc_list=[]
+                        f_Pc_list = []
                     if dir not in f_Pc_list:
                         File(dir_path, lists, f_Pc_list)
                 else:
                     lists.append(dir_path)
             return lists
+
     new_file_li = []
-    files = File(path, [], Pc_list)
+    files = File(path, [], Pc_path_list)
     if files:
-        if Hz_list is None:
-            Hz_list = []
+        if Pc_hz_list is None:
+            Pc_hz_list = []
+        if Only_hz_list is None:
+            Only_hz_list=[]
         for file in files:
-            if os.path.splitext(file)[1] not in Hz_list:
-                new_file_li.append(file)
+            if os.path.splitext(file)[1] not in Pc_hz_list:
+                if Only_hz_list:
+                    if os.path.splitext(file)[1]  in Only_hz_list:
+                        new_file_li.append(file)
+                else:
+                    new_file_li.append(file)
     return new_file_li
 
 
