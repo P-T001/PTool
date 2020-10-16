@@ -1,6 +1,7 @@
 import os
+import re
 import shutil
-
+import chardet
 
 def List_file(path, Pc_hz_list=None,Only_hz_list=None, Pc_path_list=None):
     '''
@@ -113,3 +114,58 @@ def Copy(path,out):
             if not os.path.isdir(back_name):
                 os.makedirs(back_name)
             Copy(name, back_name)
+            
+def File_code(filename):
+    '''
+    功能：读取文件编码
+    :param filename: 文件路径|str
+    :return: 编码和数据|
+    '''
+    with open(filename,'rb') as f:
+        data=f.read()
+        en=chardet.detect(data).get("encoding")
+        f.close()
+        return en,data
+            
+
+def File_auto_rename(file_path):
+    '''
+    功能：判断是否存在同名文件，如果已存在返回重命名文件名添加”(0), (1), (2)….“之类的编号
+    :param file_path:文件路径|str
+    :return:重新命名的文件路径|str
+    '''
+    directory, file_name = os.path.split(file_path)
+    while os.path.isfile(file_path):
+        pattern = '(\d+)\)\.'
+        if re.search(pattern, file_name) is None:
+            file_name = file_name.replace('.', '(0).')
+        else:
+            current_number = int(re.findall(pattern, file_name)[-1])
+            new_number = current_number + 1
+            file_name = file_name.replace(f'({current_number}).', f'({new_number}).')
+        file_path = os.path.join(directory + os.sep + file_name)
+    return file_path
+        
+def Test_time(target,log_file, arg=(), **m):
+    '''
+    功能：测试函数的运行时间
+    :param target: 目标函数|变量|
+    :param log_file: 日志文件路径|str|
+    :param arg: 目标函数的参数|tuple
+    :param m: 目标函数的参数|可不输入
+    :return: 
+    '''
+    St = int(time.time())
+    s = time.localtime(St)
+    st = time.strftime("%Y-%m-%d %H:%M:%S", s)
+    print("开始时间：%s "%st)
+    target(*arg, **m)
+    Et = int(time.time())
+    e = time.localtime(Et)
+    et = time.strftime("%Y-%m-%d %H:%M:%S", e)
+    print("结束时间：%s "%et)
+    print("用时：%d秒" % (Et-St))
+    log_=open(log_file,"a")
+    log_.write("开始时间：%s | 结束时间：%s | 用时：%d秒"%(st,et,(Et-St)))
+    log_.close()
+       
