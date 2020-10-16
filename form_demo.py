@@ -85,7 +85,7 @@ def To_list_dict(data):
         elif isinstance(data[0], dict):  # [{},{}]
             return data
 
-def To_data(filename, data, mo, max_num=0):
+def write_file(filename, data, mo, max_num=0):
     '''
     功能：保存表格数据的主函数|过程：对数据进行处理成统一格式-》是否超过限制，需要分段-》保存文件
     :param filename: 文件名|str|
@@ -127,7 +127,7 @@ def To_data(filename, data, mo, max_num=0):
     else:
         print('{}|数据量超过{},不能使用a模式'.format(filename, max_num))
 
-def Read_file(filename):
+def Read_file(filename,encode='utf-8'):
     '''
     功能：读取表格（.xls/.xlsx/.csv）文件，返回list_dict格式
     :param filename: 文件路径名
@@ -135,9 +135,9 @@ def Read_file(filename):
     '''
     hz = os.path.splitext(filename)[1]
     if hz == '.xls' or hz == '.xlsx':
-        data = pd.read_excel(filename)
+        data = pd.read_excel(filename,engine='python')
     elif hz == '.csv':
-        data = pd.read_csv(filename)
+        data = pd.read_csv(filename,encoding=encode,engine='python')
     else:
         data = None
         exit()
@@ -198,17 +198,17 @@ if __name__ == '__main__':
     di = {'name1': ['aaa', 'bbb'], 'age': ['18', '19']}
     li = [['name', 'age'], ['aaa', '16'], ['bbb', '16'], ['ccc', '16']]
     dic = [{'name1': 'aaa%d' % i} for i in range(0, 65545)]   
-    # 创建对象并写入
+    # ----------
     for i in range(1, 3):
-        To_data('xx/di.csv',di,'w')
-        To_data('xx/di.xls', di, 'w')
-        To_data('xx/di.xlsx', di, 'w')
-        To_data('xx/li.csv', li, 'w')
-        To_data('xx/li.xls', li, 'w')
-        To_data('xx/li.xlsx', li, 'w')
-        To_data('xx/dic.csv', dic, 'w')
-        To_data('xx/dic.xls', dic, 'w')
-        To_data('xx/dic.xlsx', dic, 'w')
+        write_file('xx/di.csv',di,'w')
+        write_file('xx/di.xls', di, 'w')
+        write_file('xx/di.xlsx', di, 'w')
+        write_file('xx/li.csv', li, 'w')
+        write_file('xx/li.xls', li, 'w')
+        write_file('xx/li.xlsx', li, 'w')
+        write_file('xx/dic.csv', dic, 'w')
+        write_file('xx/dic.xls', dic, 'w')
+        write_file('xx/dic.xlsx', dic, 'w')
     # 读取表格文件----------------------------
     result1 = Read_file('xx/li.xls')
     result2 = Read_file('xx/li.xlsx')
