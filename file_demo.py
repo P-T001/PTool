@@ -3,7 +3,7 @@ import re
 import shutil
 import chardet
 
-def List_file(path, Pc_hz_list=None,Only_hz_list=None, Pc_path_list=None):
+def File_list(path, Pc_hz_list=None,Only_hz_list=None, Pc_path_list=None):
     '''
     功能：列出路径下的所有文件路径，可根据条件筛选（不包括文件夹）
     :param path: 路径|str|相对路径/绝对路径
@@ -44,7 +44,7 @@ def List_file(path, Pc_hz_list=None,Only_hz_list=None, Pc_path_list=None):
     return new_file_li
 
 
-def List_dir(path,Pc_list=None):
+def Dir_list(path,Pc_list=None):
     '''
     功能：列出路径下的所有文件夹（不包括文件）
     :param path: 路径|str|相对路径/绝对路径
@@ -81,7 +81,7 @@ def Del_file_null(path):
             os.rmdir(file_path)
 
 
-def Del_file(path,dir_status=None):
+def Del_files(path,dir_status=None):
     '''
     功能:移除路径下的所有文件（文件和文件夹），删除的路径可以包含path
     :param path: 路径
@@ -98,7 +98,7 @@ def Del_file(path,dir_status=None):
     if dir_status:
         os.rmdir(path)
         
-def Copy(path,out):
+def Copys(path,out):
     '''
     功能：复制path路径下的所有文件（文件和文件夹）到out路径（该路径可以不存在）下
     :param path: 源路径|str
@@ -145,7 +145,45 @@ def File_auto_rename(file_path):
             file_name = file_name.replace(f'({current_number}).', f'({new_number}).')
         file_path = os.path.join(directory + os.sep + file_name)
     return file_path
-        
+
+       
+def File_to_code(src,dst,code):
+    '''
+    功能：单文件转换文件编码
+    :param src: 源文件路径|str|如：./xxx1.txt
+    :param dst: 转换后文件路径|str|如：./xxx2.txt
+    :param code:转换编码|str|如：utf-8
+    :return:
+    '''
+    en,data=File_code(src)
+    if not os.path.isdir(os.path.dirname(dst)):
+        os.makedirs(os.path.dirname(dst))
+    if en!=code:
+        with codecs.open(src,'r',en) as f1r:
+            try:
+                with codecs.open(dst, 'w', code) as f2w:
+                    f2w.write(f1r.read())
+            except Exception as E:
+                print('{}|{}'.format(src,E))
+
+def File_to_codes(src,dst,code):
+    '''
+    功能：批量转换文件编码
+    :param src: 源目录路径|str|如：./src/
+    :param dst: 转换后存放目录路径/str|如：./dst/
+    :param code: 转换编码|str|如：utf-8
+    :return: 
+    '''
+    filenames=File_list(src)
+    if not os.path.isdir(dst):
+        os.makedirs(dst)
+    for file in filenames:
+        File_to_code(file,'{}/{}'.format(dst,file.replace(src,'')),code)
+
+
+
+
+
 def Test_time(target,log_file, arg=(), **m):
     '''
     功能：测试函数的运行时间
@@ -168,4 +206,3 @@ def Test_time(target,log_file, arg=(), **m):
     log_=open(log_file,"a")
     log_.write("开始时间：%s | 结束时间：%s | 用时：%d秒"%(st,et,(Et-St)))
     log_.close()
-       
