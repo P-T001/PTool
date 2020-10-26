@@ -3,6 +3,23 @@ import re
 import shutil
 import chardet
 
+def File_sample(path):
+    '''
+    功能：清楚了解路径中的目录、文件名、文件名（无后缀）、文件名后缀的取法
+    :param path:文件路径
+    :return:
+    '''
+    dir=os.path.dirname(path)  # 目录名
+    filename=os.path.basename(path) # 文件名
+    file=os.path.splitext(filename)[0] # 文件名，无后缀
+    hz=os.path.splitext(filename)[1] # 后缀
+    # 如果path路径不存在，但dir,filename,file,hz还是会根据path取出来
+    print('路径：{} | 目录：{} | 文件名：{} | 文件名（无后缀）：{} | 文件名后缀：{}'.format(path,dir,filename,file,hz))
+    # 如果dir不存在，则root，dirs,files为均为空，输出不显示
+    for root,dirs,files in os.walk(dir):
+        print(root,dirs,files)
+
+
 def File_list(path, Pc_hz_list=None,Only_hz_list=None, Pc_path_list=None):
     '''
     功能：列出路径下的所有文件路径，可根据条件筛选（不包括文件夹）
