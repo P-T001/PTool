@@ -135,9 +135,9 @@ def Read_file(filename,encode='utf-8'):
     '''
     hz = os.path.splitext(filename)[1]
     if hz == '.xls' or hz == '.xlsx':
-        data = pd.read_excel(filename,engine='python')
+        data = pd.read_excel(filename)
     elif hz == '.csv':
-        data = pd.read_csv(filename,encoding=encode,engine='python')
+        data = pd.read_csv(filename,encoding=encode)
     else:
         data = None
         exit()
