@@ -19,6 +19,22 @@ def File_sample(path):
     for root,dirs,files in os.walk(dir):
         print(root,dirs,files)
 
+def File_read_change(filename,hook,change):
+    '''
+    功能：替换文本内容|文件名,定位字符串,替换字符串
+    :param filename: 文件路径|str
+    :param hook: 特殊唯一定位字符串|str
+    :param change: 替换字符串|str
+    :return: 
+    '''
+    F_read=open(filename,'r',encoding='utf-8')
+    F_read_lines=F_read.readlines()
+    new_line=[line.replace(hook,change) for line in F_read_lines]
+    F_read.close()
+    F_change=open(filename,'w',encoding='utf-8')
+    F_change.writelines(new_line)
+    F_change.close()        
+     
 
 def File_list(path, Pc_hz_list=None,Only_hz_list=None, Pc_path_list=None):
     '''
@@ -198,7 +214,15 @@ def File_to_codes(src,dst,code):
         File_to_code(file,'{}/{}'.format(dst,file.replace(src,'')),code)
 
 
-
+def EX_cmd(path,cmd):
+    '''
+    功能：命令执行|执行路径，执行命令
+    :param path:命令执行路径|str 
+    :param cmd: 执行命令|str
+    :return: 
+    '''
+    import subprocess
+    subprocess.call(cmd, shell=True, cwd=path)
 
 
 def Test_time(target,log_file, arg=(), **m):
