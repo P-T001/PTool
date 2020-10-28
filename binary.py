@@ -27,3 +27,19 @@ def Payload_change2(payload_file):
         new_li.append('0{}'.format(x.replace('"','').replace('\n','').replace(';','')))
     result=','.join(new_li)
     return result+','
+
+
+def Str_fd(string,num):
+    '''
+    功能:将字符串根据分割次数进行长度分段
+    :param enshellcode: 分段字符串|str
+    :param num: 分段次数|int
+    :return: 分段字符串的列表|list
+    '''
+    s_num = round(len(string) / num + 1)
+    num = 0
+    str_fd_list = []
+    for i in range(num):
+        str_fd_list.append(str[num:s_num * (i + 1)])
+        num += s_num
+    return str_fd_list
