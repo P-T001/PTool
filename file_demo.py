@@ -146,7 +146,7 @@ def Copys(path,out):
         else:
             if not os.path.isdir(back_name):
                 os.makedirs(back_name)
-            Copy(name, back_name)
+            Copys(name, back_name)
             
 def File_code(filename):
     '''
