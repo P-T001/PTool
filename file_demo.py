@@ -148,19 +148,6 @@ def Copys(path,out):
                 os.makedirs(back_name)
             Copys(name, back_name)
             
-def File_code(filename):
-    '''
-    功能：读取文件编码
-    :param filename: 文件路径|str
-    :return: 编码和数据|
-    '''
-    with open(filename,'rb') as f:
-        data=f.read()
-        en=chardet.detect(data).get("encoding")
-        f.close()
-        return en,data
-            
-
 def File_auto_rename(file_path):
     '''
     功能：判断是否存在同名文件，如果已存在返回重命名文件名添加”(0), (1), (2)….“之类的编号
@@ -179,6 +166,19 @@ def File_auto_rename(file_path):
         file_path = os.path.join(directory + os.sep + file_name)
     return file_path
 
+
+def File_code(filename):
+    '''
+    功能：读取文件编码
+    :param filename: 文件路径|str
+    :return: 编码和数据|
+    '''
+    with open(filename,'rb') as f:
+        data=f.read()
+        en=chardet.detect(data).get("encoding")
+        f.close()
+        return en,data
+            
        
 def File_to_code(src,dst,code):
     '''
@@ -193,11 +193,14 @@ def File_to_code(src,dst,code):
         os.makedirs(os.path.dirname(dst))
     if en!=code:
         with codecs.open(src,'r',en) as f1r:
-            try:
-                with codecs.open(dst, 'w', code) as f2w:
-                    f2w.write(f1r.read())
-            except Exception as E:
-                print('{}|{}'.format(src,E))
+            f1r_str=f1r.read()
+        f1r.close()
+        try:
+            with codecs.open(dst, 'w', code) as f2w:
+                f2w.write(f1r_str)
+            f2w.close()
+        except Exception as E:
+            print('{}|{}'.format(src,E))
 
 def File_to_codes(src,dst,code):
     '''
