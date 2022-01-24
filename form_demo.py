@@ -28,7 +28,6 @@ def Save_csv(filename,data,mode,encoding='utf-8'):
             if isinstance(data,dict) and isinstance(list(data.values())[0],list):
                 df = pd.DataFrame(data)
                 header = list(data.keys())
-                df.to_csv(filename, index=False, mode=mode, header=header, encoding=encoding)
             elif isinstance(data,list) and isinstance(data[0],dict):
                 df = pd.DataFrame(data)
                 header = list(data[0].keys())
